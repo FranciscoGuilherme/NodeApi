@@ -8,7 +8,7 @@ const options = {
         info: {
             title: 'Node API',
             version: '1.0.0',
-            description: 'Simples CRUD de usuários com MongoDB',
+            description: 'CRUD de usuários com MongoDB',
         },
         host: 'localhost:3000',
         basePath: '/',
