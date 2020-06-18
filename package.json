@@ -4,9 +4,9 @@
   "description": "Projeto de API",
   "main": "index.js",
   "scripts": {
-      "start": "node src/index.js",
-      "dev": "env-cmd -f ./dev.env nodemon src/index.js",
-      "test": "env-cmd -f ./test.env jest --watch"
+    "start": "node app.js",
+    "dev": "env-cmd -f ./src/dev.env nodemon app.js",
+    "test": "env-cmd -f ./src/test.env jest --watch"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "mongoose": "^5.9.19",
     "mongoose-unique-validator": "^2.0.3",
     "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
     "validator": "^13.1.1"
   },
   "devDependencies": {
