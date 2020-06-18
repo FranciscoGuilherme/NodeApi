@@ -184,6 +184,43 @@ const configure = (router) => {
     /**
      * @swagger
      * /users/{id}:
+     *   put:
+     *     tags:
+     *       - Users
+     *     summary: Atualiza um usuário pelo Id
+     *     description: Atualiza um usuário pelo Id.
+     *     produces:
+     *       - application/json
+     *     security:
+     *       - bearerAuth: []
+     *     parameters:
+     *       - name: path
+     *         in: path
+     *         description: Id do usuário
+     *         schema:
+     *           type: string
+     *       - name: body
+     *         in: body
+     *         description: Dados para atualizar um usuário
+     *         schema:
+     *           $ref: '#/components/schemas/User'
+     *     responses:
+     *       200:
+     *         description: Created
+     *         schema:
+     *           $ref: '#/definitions/User'
+     *       400:
+     *         description: Not Found
+     *         schema:
+     *           $ref: '#/components/schemas/400'
+     */
+    router.put('/users/:id', (req, res) => {
+        res.status(HttpStatus.OK).send({ message: '' })
+    })
+
+    /**
+     * @swagger
+     * /users/{id}:
      *   delete:
      *     tags:
      *       - Users
