@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         node: [ '8', '10', '12' ]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
     name: Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v2
@@ -20,4 +21,3 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm install
-      - run: npm start
