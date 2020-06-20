@@ -1,0 +1,37 @@
+{
+  "name": "nodeapi",
+  "version": "1.0.0",
+  "description": "Projeto de API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "env-cmd -f ./src/dev.env nodemon app.js",
+    "test": "env-cmd -f ./src/test.env jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-personal:FranciscoGuilherme/NodeApi.git"
+  },
+  "keywords": [
+    "API",
+    "MongoDB",
+    "AWS"
+  ],
+  "author": "Francisco Guilherme Antunes",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http-status-codes": "^1.4.0",
+    "mongodb": "^3.5.9",
+    "mongoose": "^5.9.19",
+    "mongoose-unique-validator": "^2.0.3",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
+    "validator": "^13.1.1"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "jest": "^26.0.1",
+    "supertest": "^4.0.2"
+  }
+}

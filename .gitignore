@@ -1,0 +1,6 @@
+src/dev.env
+src/test.env
+npm-debug.log
+
+data/
+node_modules/
