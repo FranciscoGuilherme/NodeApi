@@ -1,5 +1,6 @@
 const express = require('express')
 const globals = require('./src/config/globals')
+const mongoose = require('./src/config/mongoose')
 
 const app = express()
 const router = express.Router()
