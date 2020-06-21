@@ -1,7 +1,9 @@
-const usersController = include('controllers/usersController')
+const roles = include('controllers/roles')
+const users = include('controllers/users')
 
 const configure = (router) => {
-    usersController.configure(router)
+    roles.configure(router)
+    users.configure(router)
 }
 
 module.exports = configure

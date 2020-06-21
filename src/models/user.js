@@ -8,8 +8,8 @@ const User = mongoose.Schema({
         default: 1,
         validate: {
             validator: (value) => {
-                if (value < 0) {
-                    throw new Error('Age cannot be lower then or equal to zero')
+                if (value <= 0) {
+                    throw new Error('Idade nao pode ser menor ou igual a zero')
                 }
             }
         }
@@ -32,7 +32,7 @@ const User = mongoose.Schema({
         validate: {
             validator: (value) => {
                 if (!validator.isEmail(value)) {
-                    throw new Error('E-mail cannot be accepted')
+                    throw new Error('E-mail invalido')
                 }
             }
         }
@@ -48,10 +48,15 @@ const User = mongoose.Schema({
                 if (value.toLowerCase().includes('password') ||
                     value.toLowerCase().includes('senha')
                 ) {
-                    throw new Error('Password cannot have this content, it is very obvious')
+                    throw new Error('Senha nao pode conter senha ou password como conteudo')
                 }
             }
         }
+    },
+    roles: {
+        type: Array,
+        required: true,
+        default: ['ROLE_GUEST']
     }
 })
 
