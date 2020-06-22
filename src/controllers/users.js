@@ -4,6 +4,7 @@ const HttpStatus = require('http-status-codes')
 
 const Role = include('models/role')
 const User = include('models/user')
+const logger = include('services/logger')
 const responses = include('helpers/responses')
 const authorization = include('middlewares/authorization')
 const identifyById = include('middlewares/identifiers/identifyById')
@@ -148,7 +149,7 @@ const configure = (router) => {
             })
         }
 
-        const token = jwt.sign({ _id: req.userOnPath._id, roles: req.userOnPath.roles }, process.env.TOKEN_SECRET)
+        const token = jwt.sign({ _id: req.userOnPath._id, roles: req.userOnPath.roles }, process.env.JWT_SECRET)
 
         res.header('Authorization', token).status(HttpStatus.OK).send({
             message: 'Login realizado com sucesso!',
@@ -190,6 +191,7 @@ const configure = (router) => {
      *           properties:
      *             message:
      *               type: string
+     *               example: 'User validation failed: roles: roles e um parametro obrigatorio'
      *       401:
      *         $ref: '#/components/schemas/401'
      *       500:
@@ -201,37 +203,54 @@ const configure = (router) => {
      *               type: string
      *               example: Ocorreu um erro durante a criação do usuário
      */
-    router.post('/users/create', authorization, async (req, res) => {
-        const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(req.body.password, salt)
-        const user = new User({
+    router.post('/users/create', authorization, (req, res) => {
+        const userSchema = {
             age: req.body.age,
             name: req.body.name,
             email: req.body.email,
-            password: hash,
+            password: req.body.password,
             roles: req.body.roles
-        })
+        }
 
-        if (req.body.roles) {
-            const result = await Role.find({ name: { $all: req.body.roles } })
+        User(userSchema).validate(async (err) => {
+            if (err) {
+                logger({ folder: 'users/create', message: JSON.stringify(err) }, (err) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                })
 
-            if (!result.length) {
-                return res.status(HttpStatus.BAD_REQUEST).send({
-                    message: 'Insira apenas roles cadastradas no sistema'
+                return res.status(HttpStatus.BAD_REQUEST).send({ message: err.message })
+            }
+
+            const salt = await bcrypt.genSalt(10)
+            const hash = await bcrypt.hash(req.body.password, salt)
+            const user = new User({
+                age: req.body.age,
+                name: req.body.name,
+                email: req.body.email,
+                password: hash,
+                roles: req.body.roles
+            })
+
+            try {
+                const saved = await user.save()
+
+                res.status(HttpStatus.OK).send(saved)
+            }
+            catch (err) {
+                logger({ folder: 'users/create', message: JSON.stringify(err) }, (err) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                })
+
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+                    message: 'Ocorreu um erro durante a criação do usuário'
                 })
             }
-        }
+        })
 
-        try {
-            const saved = await user.save()
-
-            res.status(HttpStatus.OK).send(saved)
-        }
-        catch (err) {
-            res.status(HttpStatus.BAD_REQUEST).send({
-                message: 'Ocorreu um erro durante a criação do usuário'
-            })
-        }
     })
 
     /**
