@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const uniqueValidator = require('mongoose-unique-validator')
 
+const Role = include('models/role')
+
 const User = mongoose.Schema({
     age: {
         type: Number,
@@ -55,8 +57,19 @@ const User = mongoose.Schema({
     },
     roles: {
         type: Array,
-        required: true,
-        default: ['ROLE_GUEST']
+        validate: {
+            validator: async (roles) => {
+                if (!roles.length) {
+                    throw new Error('roles e um parametro obrigatorio')
+                }
+
+                const result = await Role.find({ name: { $all: roles } })
+
+                if (!result.length) {
+                    throw new Error('Insira apenas roles cadastradas no sistema')
+                }
+            }
+        }
     }
 })
 
