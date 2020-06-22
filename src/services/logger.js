@@ -15,16 +15,16 @@ const logger = (file, callback) => {
     })
 
     const params = {
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key: file.folder + '/' + name,
         Body: fs.readFileSync(path)
     }
 
     const s3 = new aws.S3({
-        Bucket: process.env.BUCKET_NAME,
-        region: process.env.REGION_NAME,
-        accessKeyId: process.env.ACCESS_KEY_ID,
-        secretAccessKey: process.env.SECRET_ACCESS_KEY
+        Bucket: process.env.AWS_BUCKET_NAME,
+        region: process.env.AWS_REGION_NAME,
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     })
 
     s3.upload(params, (err, data) => {

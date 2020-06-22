@@ -149,7 +149,7 @@ const configure = (router) => {
             })
         }
 
-        const token = jwt.sign({ _id: req.userOnPath._id, roles: req.userOnPath.roles }, process.env.TOKEN_SECRET)
+        const token = jwt.sign({ _id: req.userOnPath._id, roles: req.userOnPath.roles }, process.env.JWT_SECRET)
 
         res.header('Authorization', token).status(HttpStatus.OK).send({
             message: 'Login realizado com sucesso!',
